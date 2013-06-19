@@ -1,5 +1,6 @@
 package cn.lvu.service.impl;
 
+import cn.lvu.dao.RoleDAO;
 import cn.lvu.dao.UserDAO;
 import cn.lvu.model.Role;
 import cn.lvu.model.User;
@@ -18,12 +19,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +39,8 @@ import static cn.lvu.model.QUser.user;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private RoleDAO roleDAO;
 
     private HibernateEntityManager entityManager;
 
@@ -77,10 +78,28 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser3(Integer i) {
         try {
-            return (User)entityManager.getSession().get(User.class,i);
+            return (User) entityManager.getSession().get(User.class, i);
         } finally {
             entityManager.clear();
         }
+    }
+
+    @Override
+    @Transactional
+    public void removeRole(Integer id) {
+        roleDAO.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public void test() {
+        User user1 = getUser(1);
+        //User user2 = getUser(2);
+        Role role = user1.getRoles().get(1);
+        role.setName("asdasd");
+        //user1.getRoles().add(role);
+        saveUser(user1);
+        System.out.println(user1);
     }
 
     @Override
@@ -146,7 +165,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<Role> getUserRoles(Integer userId) {
+    public Collection<Role> getUserRoles(Integer userId) {
         return getUser(userId).getRoles();
     }
 }

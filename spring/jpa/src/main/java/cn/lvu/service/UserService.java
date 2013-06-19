@@ -37,9 +37,13 @@ public interface UserService {
 
     void removeUser(Integer userId);
 
-    Set<Role> getUserRoles(Integer userId);
+    Collection<Role> getUserRoles(Integer userId);
 
     User getUser2(Integer i);
 
     User getUser3(Integer i);
+
+    void test();
+
+    void removeRole(Integer id);
 }

@@ -1,5 +1,6 @@
 package cn.lvu.model;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -23,11 +24,14 @@ public class Role implements Serializable {
     @SequenceGenerator(name = "seq", sequenceName = "seq_role")
     @Column(length = 32)
     private Integer id;
-    @Column(length = 256, unique = true, nullable = false)
+    @Column(length = 256, nullable = false)
     private String name;
     @Column(length = 1024)
     private String description;
     private boolean enabled = true;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Integer getId() {
         return id;
@@ -61,6 +65,14 @@ public class Role implements Serializable {
         this.enabled = enabled;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Role && name.equals(((Role) obj).getName());
@@ -71,8 +83,7 @@ public class Role implements Serializable {
         return name.hashCode();
     }
 
-    @Override
     public String toString() {
-        return "[Role name:" + name + "]";
+        return ToStringBuilder.reflectionToString(this);
     }
 }

@@ -5,6 +5,7 @@ import cn.lvu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -18,6 +19,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @RequestMapping(value = "/z")
+    @ResponseBody
+    public String indexz() throws Exception {
+        return userService.getUser(3).getRoles().size() + "";
+    }
+
+    @RequestMapping(value = "/x")
+    @ResponseBody
+    public String indexx(@RequestParam int id) throws Exception {
+        userService.removeRole(id);
+        return "";
+    }
 
     @RequestMapping(value = "/a")
     @ResponseBody

@@ -1,11 +1,12 @@
 package cn.lvu.model;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 /**
  * .
@@ -17,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "t_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class User  implements Serializable {
+public class User implements Serializable {
     private static final long serialVersionUID = 5566841518772504786L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
@@ -33,10 +34,9 @@ public class User  implements Serializable {
     @Column(length = 1024)
     private String description;
     private boolean enabled = true;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "t_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private Set<Role> roles;
+    private List<Role> roles;
 
     public Integer getId() {
         return id;
@@ -86,11 +86,15 @@ public class User  implements Serializable {
         this.enabled = enabled;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
