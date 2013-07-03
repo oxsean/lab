@@ -9,6 +9,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
+import org.fluttercode.datafactory.impl.DataFactory;
 import org.hibernate.ejb.HibernateEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -87,7 +89,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void removeRole(Integer id) {
-        roleDAO.delete(id);
+        Role role = roleDAO.findOne(id);
+        User user = role.getUser();
+        user.getRoles().remove(role);
+        //roleDAO.delete(role);
     }
 
     @Override
@@ -95,8 +100,8 @@ public class UserServiceImpl implements UserService {
     public void test() {
         User user1 = getUser(1);
         //User user2 = getUser(2);
-        Role role = user1.getRoles().get(1);
-        role.setName("asdasd");
+        //Role role = user1.getRoles().get(1);
+        //role.setName("asdasd");
         //user1.getRoles().add(role);
         saveUser(user1);
         System.out.println(user1);
@@ -155,7 +160,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User saveUser(User user) {
-        return userDAO.save(user);
+        DataFactory df = new DataFactory();
+        Role role = new Role();
+        role.setName(df.getFirstName());
+        role.setDescription(df.getAddress());
+        role.setUser(user);
+        List<Role> roles = user.getRoles();
+        roles.add(role);
+        entityManager.getSession().merge(user);
+        return user;
     }
 
     @Override

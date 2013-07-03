@@ -1,7 +1,9 @@
 package cn.lvu.web;
 
+import cn.lvu.model.Role;
 import cn.lvu.model.User;
 import cn.lvu.service.UserService;
+import org.fluttercode.datafactory.impl.DataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,14 +24,22 @@ public class UserController {
 
     @RequestMapping(value = "/z")
     @ResponseBody
-    public String indexz() throws Exception {
-        return userService.getUser(3).getRoles().size() + "";
+    public String indexz(@RequestParam int id) throws Exception {
+        return userService.getUser(id).getRoles().size()+"";
     }
 
     @RequestMapping(value = "/x")
     @ResponseBody
     public String indexx(@RequestParam int id) throws Exception {
         userService.removeRole(id);
+        return "";
+    }
+
+    @RequestMapping(value = "/y")
+    @ResponseBody
+    public String indexy(@RequestParam int id) throws Exception {
+        User user=userService.getUser(id);
+        userService.saveUser(user);
         return "";
     }
 

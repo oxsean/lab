@@ -1,5 +1,6 @@
 package cn.lvu.model;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -75,12 +76,12 @@ public class Role implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Role && name.equals(((Role) obj).getName());
+        return obj instanceof Role && ObjectUtils.equals(name, ((Role) obj).getName());
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return name == null ? 0 : name.hashCode();
     }
 
     public String toString() {
