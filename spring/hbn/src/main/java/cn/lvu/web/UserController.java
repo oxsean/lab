@@ -43,7 +43,7 @@ public class UserController {
 
     @RequestMapping(value = "/a")
     @ResponseBody
-    public String indexa() throws Exception {
-        return userService.findRole().size() + "";
+    public String indexa(@RequestParam int id) throws Exception {
+        return userService.getRole(id).getUsers().size() + "";
     }
 }

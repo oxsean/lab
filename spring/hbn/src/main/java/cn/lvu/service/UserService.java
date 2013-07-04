@@ -23,4 +23,7 @@ public interface UserService {
 
     @Transactional(readOnly = true)
     List<Role> findRole();
+
+    @Transactional(readOnly = true)
+    Role getRole(Integer roleId);
 }

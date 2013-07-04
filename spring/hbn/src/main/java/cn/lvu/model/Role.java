@@ -7,6 +7,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 /**
  * .
@@ -30,9 +32,9 @@ public class Role implements Serializable {
     @Column(length = 1024)
     private String description;
     private boolean enabled = true;
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 
     public Integer getId() {
         return id;
@@ -66,22 +68,12 @@ public class Role implements Serializable {
         this.enabled = enabled;
     }
 
-    public User getUser() {
-        return user;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof Role && ObjectUtils.equals(name, ((Role) obj).getName());
-    }
-
-    @Override
-    public int hashCode() {
-        return name == null ? 0 : name.hashCode();
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public String toString() {

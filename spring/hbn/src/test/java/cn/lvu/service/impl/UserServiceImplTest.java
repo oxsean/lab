@@ -39,14 +39,6 @@ public class UserServiceImplTest {
             User user = new User();
             user.setName(df.getFirstName().toLowerCase());
             user.setViewName(name);
-            user.setRoles(new ArrayList<Role>());
-            for (int j = 0; j < 2; j++) {
-                Role role = new Role();
-                role.setName(df.getFirstName());
-                role.setDescription(df.getAddress());
-                role.setUser(user);
-                user.getRoles().add(role);
-            }
             userService.saveUser(user);
         }
     }
