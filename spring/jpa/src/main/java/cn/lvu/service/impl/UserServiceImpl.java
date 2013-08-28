@@ -29,7 +29,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import static cn.lvu.model.QUser.user;
 
 /**
  * .
@@ -153,7 +152,8 @@ public class UserServiceImpl implements UserService {
             return userDAO.findAll(request);
         } else {
             keyword = "%" + keyword + "%";
-            return userDAO.findAll(user.name.like(keyword).or(user.viewName.like(keyword)), request);
+            //return userDAO.findAll(user.name.like(keyword).or(user.viewName.like(keyword)), request);
+            return null;
         }
     }
 
