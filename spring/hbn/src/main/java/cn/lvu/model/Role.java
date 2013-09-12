@@ -32,9 +32,9 @@ public class Role implements Serializable {
     @Column(length = 1024)
     private String description;
     private boolean enabled = true;
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Integer getId() {
         return id;
@@ -68,12 +68,12 @@ public class Role implements Serializable {
         this.enabled = enabled;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String toString() {

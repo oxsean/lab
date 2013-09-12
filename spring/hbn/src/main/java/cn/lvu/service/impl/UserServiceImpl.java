@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         role.setName(df.getFirstName());
         role.setDescription(df.getAddress());
         getSession().saveOrUpdate(role);
-        Set<Role> roles = user.getRoles();
+        List<Role> roles = user.getRoles();
         roles.add(role);
         getSession().saveOrUpdate(user);
         return user;
@@ -65,7 +65,6 @@ public class UserServiceImpl implements UserService {
         User user=getUser(9);
         Role role=(Role)getSession().get(Role.class, id);
         user.getRoles().remove(role);
-        role.getUsers().remove(user);
         //getSession().delete(role);
     }
 

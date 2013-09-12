@@ -44,6 +44,6 @@ public class UserController {
     @RequestMapping(value = "/a")
     @ResponseBody
     public String indexa(@RequestParam int id) throws Exception {
-        return userService.getRole(id).getUsers().size() + "";
+        return userService.getRole(id) + "";
     }
 }

@@ -37,10 +37,10 @@ public class User implements Serializable {
     @Column(length = 1024)
     private String description;
     private boolean enabled = true;
-    @ManyToMany
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OrderBy("id desc")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "t_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private Set<Role> roles = Sets.newHashSet();
+    private List<Role> roles;
 
     public Integer getId() {
         return id;
@@ -90,11 +90,11 @@ public class User implements Serializable {
         this.enabled = enabled;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
